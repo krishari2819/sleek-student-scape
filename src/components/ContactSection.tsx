@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Mail, Download, Send, Linkedin, Github } from 'lucide-react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 export const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -9,13 +10,36 @@ export const ContactSection = () => {
     email: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to a backend service
-    console.log('Form submitted:', formData);
-    toast.success('Message sent successfully! I\'ll get back to you soon.');
-    setFormData({ name: '', email: '', message: '' });
+    setIsSubmitting(true);
+
+    try {
+      // Call the edge function to send email and store message
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          message: formData.message
+        }
+      });
+
+      if (error) {
+        console.error('Error sending message:', error);
+        toast.error('Failed to send message. Please try again.');
+      } else {
+        console.log('Message sent successfully:', data);
+        toast.success('Message sent successfully! Krishna will get back to you soon.');
+        setFormData({ name: '', email: '', message: '' });
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleDownloadResume = () => {
@@ -54,6 +78,7 @@ export const ContactSection = () => {
                   className="w-full glass p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 cursor-hover"
                   placeholder="Your full name"
                   required
+                  disabled={isSubmitting}
                 />
               </div>
               
@@ -69,6 +94,7 @@ export const ContactSection = () => {
                   className="w-full glass p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 cursor-hover"
                   placeholder="your.email@example.com"
                   required
+                  disabled={isSubmitting}
                 />
               </div>
               
@@ -84,15 +110,19 @@ export const ContactSection = () => {
                   className="w-full glass p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 cursor-hover resize-none"
                   placeholder="Tell me about your project or just say hello!"
                   required
+                  disabled={isSubmitting}
                 />
               </div>
               
               <button
                 type="submit"
-                className="w-full glass px-8 py-4 rounded-lg hover:scale-105 transition-all duration-300 cursor-hover bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border-purple-500/30 flex items-center justify-center space-x-2"
+                disabled={isSubmitting}
+                className="w-full glass px-8 py-4 rounded-lg hover:scale-105 transition-all duration-300 cursor-hover bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border-purple-500/30 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send className="w-4 h-4" />
-                <span className="gradient-text font-semibold">Send Message</span>
+                <span className="gradient-text font-semibold">
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                </span>
               </button>
             </form>
           </div>
@@ -148,7 +178,7 @@ export const ContactSection = () => {
                 </a>
                 
                 <a
-                  href="mailto:rskrishna@example.com"
+                  href="mailto:krishna61223@gmail.com"
                   className="flex items-center space-x-4 p-4 glass rounded-lg hover:scale-105 transition-all duration-300 cursor-hover group"
                 >
                   <div className="p-3 glass rounded-full bg-green-500/10">
@@ -156,7 +186,7 @@ export const ContactSection = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold group-hover:gradient-text transition-all duration-300">Email</h4>
-                    <p className="text-sm text-muted-foreground">rskrishna@example.com</p>
+                    <p className="text-sm text-muted-foreground">krishna61223@gmail.com</p>
                   </div>
                 </a>
               </div>
