@@ -97,35 +97,6 @@
   }
 }
 
-/* Custom Cursor */
-.cursor {
-  width: 20px;
-  height: 20px;
-  border: 2px solid #8b5cf6;
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9999;
-  transition: all 0.1s ease;
-  backdrop-filter: blur(4px);
-}
-
-.cursor-follower {
-  width: 8px;
-  height: 8px;
-  background: linear-gradient(45deg, #8b5cf6, #06b6d4);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9998;
-  transition: all 0.3s ease;
-}
-
-.cursor.hover {
-  transform: scale(1.5);
-  background: rgba(139, 92, 246, 0.1);
-}
-
 /* Glassmorphism */
 .glass {
   background: rgba(255, 255, 255, 0.05);
