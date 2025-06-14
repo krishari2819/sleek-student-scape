@@ -1,5 +1,4 @@
 
-
 import Spline from '@splinetool/react-spline';
 import { useState } from 'react';
 
@@ -28,7 +27,7 @@ export const SplineScene = ({ scene, className = "", onLoad, onError }: SplineSc
   };
 
   return (
-    <div className={`spline-container ${className}`} style={{ pointerEvents: 'none' }}>
+    <div className={`spline-container ${className}`}>
       {isLoading && !hasError && (
         <div className="absolute inset-0 flex items-center justify-center text-muted-foreground bg-background/10 backdrop-blur-sm">
           <div className="text-center">
@@ -48,15 +47,12 @@ export const SplineScene = ({ scene, className = "", onLoad, onError }: SplineSc
         </div>
       )}
       {!hasError && (
-        <div style={{ pointerEvents: 'none' }}>
-          <Spline
-            scene={scene}
-            onLoad={handleLoad}
-            onError={handleError}
-          />
-        </div>
+        <Spline
+          scene={scene}
+          onLoad={handleLoad}
+          onError={handleError}
+        />
       )}
     </div>
   );
 };
-
