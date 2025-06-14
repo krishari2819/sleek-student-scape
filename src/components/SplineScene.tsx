@@ -28,21 +28,31 @@ export const SplineScene = ({ scene, className = "", onLoad, onError }: SplineSc
 
   return (
     <div className={`spline-container ${className}`}>
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-          Loading 3D Scene...
+      {isLoading && !hasError && (
+        <div className="absolute inset-0 flex items-center justify-center text-muted-foreground bg-background/10 backdrop-blur-sm">
+          <div className="text-center">
+            <div className="animate-spin w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+            <p>Loading 3D Scene...</p>
+          </div>
         </div>
       )}
       {hasError && (
-        <div className="absolute inset-0 flex items-center justify-center text-red-500">
-          Failed to load 3D scene
+        <div className="absolute inset-0 flex items-center justify-center text-center p-4 bg-background/10 backdrop-blur-sm">
+          <div>
+            <p className="text-red-400 mb-2">Failed to load 3D scene</p>
+            <p className="text-sm text-muted-foreground">
+              Scene may not be published or URL format incorrect
+            </p>
+          </div>
         </div>
       )}
-      <Spline
-        scene={scene}
-        onLoad={handleLoad}
-        onError={handleError}
-      />
+      {!hasError && (
+        <Spline
+          scene={scene}
+          onLoad={handleLoad}
+          onError={handleError}
+        />
+      )}
     </div>
   );
 };
