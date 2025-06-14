@@ -1,3 +1,4 @@
+
 import {
   GraduationCap,
   Trophy,
@@ -9,18 +10,18 @@ import {
 } from "lucide-react";
 
 const skills = [
-  { name: "JavaScript", level: 90, category: "Frontend" },
-  { name: "TypeScript", level: 85, category: "Frontend" },
-  { name: "React", level: 88, category: "Frontend" },
-  { name: "Node.js", level: 80, category: "Backend" },
-  { name: "Python", level: 75, category: "Backend" },
-  { name: "Java", level: 70, category: "Backend" },
-  { name: "MongoDB", level: 82, category: "Database" },
-  { name: "PostgreSQL", level: 78, category: "Database" },
-  { name: "Git", level: 85, category: "Tools" },
-  { name: "Docker", level: 70, category: "Tools" },
-  { name: "AWS", level: 65, category: "Cloud" },
-  { name: "Firebase", level: 80, category: "Cloud" },
+  { name: "JavaScript", category: "Frontend" },
+  { name: "TypeScript", category: "Frontend" },
+  { name: "React", category: "Frontend" },
+  { name: "Node.js", category: "Backend" },
+  { name: "Python", category: "Backend" },
+  { name: "Java", category: "Backend" },
+  { name: "MongoDB", category: "Database" },
+  { name: "PostgreSQL", category: "Database" },
+  { name: "Git", category: "Tools" },
+  { name: "Docker", category: "Tools" },
+  { name: "AWS", category: "Cloud" },
+  { name: "Firebase", category: "Cloud" },
 ];
 
 const experiences = [
@@ -72,6 +73,14 @@ const achievements = [
 ];
 
 const skillCategories = ["Frontend", "Backend", "Database", "Tools", "Cloud"];
+
+const categoryColors = {
+  Frontend: "from-purple-500/20 to-pink-500/20 border-purple-500/30",
+  Backend: "from-blue-500/20 to-cyan-500/20 border-blue-500/30",
+  Database: "from-green-500/20 to-emerald-500/20 border-green-500/30",
+  Tools: "from-orange-500/20 to-red-500/20 border-orange-500/30",
+  Cloud: "from-indigo-500/20 to-violet-500/20 border-indigo-500/30",
+};
 
 export const AboutSection = () => {
   return (
@@ -160,7 +169,7 @@ export const AboutSection = () => {
             </div>
           </div>
 
-          {/* Skills Section */}
+          {/* Skills Section - Bubble Cards */}
           <div className="glass p-8 rounded-2xl hover:scale-105 transition-all duration-300 cursor-hover">
             <div className="flex items-center mb-8">
               <div className="p-3 glass rounded-full mr-4 bg-blue-500/10">
@@ -175,25 +184,21 @@ export const AboutSection = () => {
                   <h4 className="text-lg font-semibold text-muted-foreground">
                     {category}
                   </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex flex-wrap gap-3">
                     {skills
                       .filter((skill) => skill.category === category)
                       .map((skill, index) => (
-                        <div key={index} className="space-y-2">
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm font-medium">
-                              {skill.name}
-                            </span>
-                            <span className="text-xs text-muted-foreground">
-                              {skill.level}%
-                            </span>
-                          </div>
-                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div
-                              className="bg-gradient-to-r from-purple-500 to-cyan-500 h-2 rounded-full transition-all duration-1000 ease-out"
-                              style={{ width: `${skill.level}%` }}
-                            />
-                          </div>
+                        <div
+                          key={index}
+                          className={`
+                            px-4 py-2 rounded-full text-sm font-medium
+                            bg-gradient-to-r ${categoryColors[category]}
+                            backdrop-blur-sm border
+                            hover:scale-110 transition-all duration-300
+                            cursor-pointer shadow-lg hover:shadow-xl
+                          `}
+                        >
+                          {skill.name}
                         </div>
                       ))}
                   </div>
