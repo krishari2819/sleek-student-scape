@@ -80,21 +80,26 @@ export const FeaturedSection = () => {
             return (
               <div
                 key={index}
-                className="group glass p-8 rounded-2xl hover:scale-105 transition-all duration-500 cursor-hover relative overflow-hidden"
+                className="group glass p-8 rounded-2xl hover:scale-105 transition-all duration-500 cursor-pointer hover:cursor-zoom-in relative overflow-hidden"
               >
                 {/* Background gradient */}
                 <div
                   className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-5 group-hover:opacity-10 transition-opacity duration-300`}
                 />
 
-                <div className="relative z-10">
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block relative z-10"
+                >
                   <div className="flex items-start justify-between mb-4">
                     <div
                       className={`p-4 glass rounded-full bg-gradient-to-br ${item.color} bg-opacity-10`}
                     >
                       <IconComponent className="w-6 h-6" />
                     </div>
-                    <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors cursor-hover" />
+                    <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
                   </div>
 
                   <h3 className="text-xl font-bold mb-2 group-hover:gradient-text transition-all duration-300">
@@ -112,7 +117,7 @@ export const FeaturedSection = () => {
                       {item.type.toUpperCase()}
                     </span>
                   </div>
-                </div>
+                </a>
               </div>
             );
           })}
