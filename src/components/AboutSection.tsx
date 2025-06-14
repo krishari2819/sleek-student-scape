@@ -1,4 +1,3 @@
-
 import {
   GraduationCap,
   Trophy,
@@ -10,18 +9,18 @@ import {
 } from "lucide-react";
 
 const skills = [
-  { name: "JavaScript", category: "Frontend" },
-  { name: "TypeScript", category: "Frontend" },
-  { name: "React", category: "Frontend" },
-  { name: "Node.js", category: "Backend" },
-  { name: "Python", category: "Backend" },
-  { name: "Java", category: "Backend" },
-  { name: "MongoDB", category: "Database" },
-  { name: "PostgreSQL", category: "Database" },
-  { name: "Git", category: "Tools" },
-  { name: "Docker", category: "Tools" },
-  { name: "AWS", category: "Cloud" },
-  { name: "Firebase", category: "Cloud" },
+  "JavaScript",
+  "TypeScript", 
+  "React",
+  "Node.js",
+  "Python",
+  "Java",
+  "MongoDB",
+  "PostgreSQL",
+  "Git",
+  "Docker",
+  "AWS",
+  "Firebase",
 ];
 
 const experiences = [
@@ -169,39 +168,22 @@ export const AboutSection = () => {
             </div>
           </div>
 
-          {/* Skills Section - Bubble Cards */}
+          {/* Skills Section - Centered */}
           <div className="glass p-8 rounded-2xl hover:scale-105 transition-all duration-300 cursor-hover">
-            <div className="flex items-center mb-8">
+            <div className="flex items-center justify-center mb-8">
               <div className="p-3 glass rounded-full mr-4 bg-blue-500/10">
                 <Code2 className="w-6 h-6 text-blue-500" />
               </div>
               <h3 className="text-2xl font-bold">Technical Skills</h3>
             </div>
 
-            <div className="space-y-8">
-              {skillCategories.map((category) => (
-                <div key={category} className="space-y-4">
-                  <h4 className="text-lg font-semibold text-muted-foreground">
-                    {category}
-                  </h4>
-                  <div className="flex flex-wrap gap-3">
-                    {skills
-                      .filter((skill) => skill.category === category)
-                      .map((skill, index) => (
-                        <div
-                          key={index}
-                          className={`
-                            px-4 py-2 rounded-full text-sm font-medium
-                            bg-gradient-to-r ${categoryColors[category]}
-                            backdrop-blur-sm border
-                            hover:scale-110 transition-all duration-300
-                            cursor-pointer shadow-lg hover:shadow-xl
-                          `}
-                        >
-                          {skill.name}
-                        </div>
-                      ))}
-                  </div>
+            <div className="flex flex-wrap justify-center gap-3">
+              {skills.map((skill, index) => (
+                <div
+                  key={index}
+                  className="px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border border-purple-500/30 backdrop-blur-sm hover:scale-110 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-xl"
+                >
+                  {skill}
                 </div>
               ))}
             </div>
