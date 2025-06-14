@@ -1,4 +1,3 @@
-
 import { ChevronDown } from "lucide-react";
 import { SplineScene } from "./SplineScene";
 
@@ -22,6 +21,16 @@ export const HeroSection = () => {
         <div
           className="absolute bottom-32 left-32 w-40 h-40 bg-blue-500/10 rounded-full blur-xl animate-float"
           style={{ animationDelay: "4s" }}
+        />
+      </div>
+
+      {/* Spline 3D Background - Above background but below content */}
+      <div className="absolute inset-0 z-5">
+        <SplineScene 
+          scene="https://prod.spline.design/K8B69mD4voEALzuq/scene.splinecode"
+          className="w-full h-full opacity-30"
+          onLoad={() => console.log('Spline scene loaded successfully')}
+          onError={(error) => console.error('Spline scene failed to load:', error)}
         />
       </div>
 
@@ -95,16 +104,6 @@ export const HeroSection = () => {
             <ChevronDown className="w-8 h-8 text-muted-foreground" />
           </button>
         </div>
-      </div>
-
-      {/* Spline 3D Background - Now at the very top for testing */}
-      <div className="absolute inset-0" style={{ zIndex: 9999 }}>
-        <SplineScene 
-          scene="https://prod.spline.design/K8B69mD4voEALzuq/scene.splinecode"
-          className="w-full h-full opacity-30"
-          onLoad={() => console.log('Spline scene loaded successfully')}
-          onError={(error) => console.error('Spline scene failed to load:', error)}
-        />
       </div>
     </section>
   );
