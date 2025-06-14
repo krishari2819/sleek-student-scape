@@ -10,18 +10,20 @@ export const HeroSection = () => {
   return (
     <section id="home" className="min-h-screen relative overflow-hidden">
       {/* Spline 3D Background */}
-      <SplineScene 
-        scene="https://prod.spline.design/56d2fdf2-ab0f-457c-98c3-34048c92f7d1/scene.splinecode"
-        className="spline-hero opacity-30"
-        onLoad={() => console.log('Spline scene loaded')}
-        onError={(error) => console.error('Spline scene error:', error)}
-      />
+      <div className="absolute inset-0 z-0">
+        <SplineScene 
+          scene="https://prod.spline.design/56d2fdf2-ab0f-457c-98c3-34048c92f7d1/scene.splinecode"
+          className="w-full h-full opacity-30"
+          onLoad={() => console.log('Spline scene loaded successfully')}
+          onError={(error) => console.error('Spline scene failed to load:', error)}
+        />
+      </div>
 
       {/* Background gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/40 via-blue-900/40 to-cyan-900/40" />
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/40 via-blue-900/40 to-cyan-900/40 z-1" />
 
       {/* Floating elements */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 z-2">
         <div className="absolute top-20 left-20 w-32 h-32 bg-purple-500/10 rounded-full blur-xl animate-float" />
         <div
           className="absolute top-40 right-32 w-24 h-24 bg-cyan-500/10 rounded-full blur-xl animate-float"
