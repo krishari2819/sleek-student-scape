@@ -3,50 +3,56 @@ import { Award, FileText, Star, ExternalLink } from "lucide-react";
 const featuredItems = [
   {
     type: "certificate",
-    title: "Google Cloud Professional",
-    description: "Cloud Architecture and Development",
+    title: "Cloud Computing",
+    description:
+      "Ranked in the top 2% of Cloud Computing course at IIT Kharagpur",
     icon: Award,
     color: "from-blue-500 to-cyan-500",
-    link: "#",
+    link: "https://drive.google.com/file/d/1d-cVtDANB9cAAOFcu-R0M9Ja8PWKPGKQ/view?usp=sharing",
   },
   {
     type: "research",
-    title: "AI in Web Development",
-    description: "Published research paper on AI integration",
+    title:
+      "Enhancing Network Performance through AI-Based Traffic Optimization Techniques",
+    description: "Paper has been published officially in IEEE Xplore",
     icon: FileText,
     color: "from-purple-500 to-pink-500",
+    link: "https://ieeexplore.ieee.org/document/10961444",
+  },
+  {
+    type: "achievement",
+    title: "Hackmatrix Top 1",
+    description:
+      "My team have been shortlisted as top 1 team from all over India, organized by IIT Patna",
+    icon: Star,
+    color: "from-pink-500 to-rose-500",
     link: "#",
   },
   {
     type: "achievement",
-    title: "Hackathon Winner",
-    description: "University Coding Competition 2024",
-    icon: Star,
-    color: "from-yellow-500 to-orange-500",
-    link: "#",
-  },
-  {
-    type: "certificate",
-    title: "AWS Solutions Architect",
-    description: "Associate Level Certification",
+    title: "Appointed as Joint Secretary",
+    description:
+      "I have been appointed as the Joint Secretary for ISTE Student Chapter CU, and have organized 6+ events successfully",
     icon: Award,
     color: "from-green-500 to-teal-500",
     link: "#",
   },
   {
-    type: "research",
-    title: "Machine Learning Applications",
-    description: "Conference paper on ML in fintech",
+    type: "certificate",
+    title: "AIR 126 in Coding Ninjas Premier League",
+    description:
+      "Secured a All India Rank of 126 in Coding Ninjas programming competions CNPL",
     icon: FileText,
     color: "from-indigo-500 to-purple-500",
     link: "#",
   },
   {
     type: "achievement",
-    title: "Open Source Contributor",
-    description: "50+ contributions to major projects",
+    title: "Hack with Tricity Top 5",
+    description:
+      "Proud to share that out of all the talented teams that participated, we secured a spot in the Top 10! 🎖️",
     icon: Star,
-    color: "from-pink-500 to-rose-500",
+    color: "from-yellow-500 to-orange-500",
     link: "#",
   },
 ];
