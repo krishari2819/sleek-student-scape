@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { Code2 } from 'lucide-react';
 
 interface Skill {
@@ -12,6 +12,8 @@ interface SkillBubble extends Skill {
   id: string;
   x: number;
   y: number;
+  vx: number;
+  vy: number;
   isDragging: boolean;
   size: number;
   color: string;
@@ -42,31 +44,131 @@ const categoryColors = {
 
 export const InteractiveSkills = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const animationRef = useRef<number>();
   const [skillBubbles, setSkillBubbles] = useState<SkillBubble[]>([]);
   const [draggedBubble, setDraggedBubble] = useState<string | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
-  useEffect(() => {
-    // Initialize bubble positions
-    const initializeBubbles = () => {
-      if (!containerRef.current) return;
+  const initializeBubbles = useCallback(() => {
+    if (!containerRef.current) return;
+    
+    const container = containerRef.current;
+    const containerRect = container.getBoundingClientRect();
+    const centerX = containerRect.width / 2;
+    const centerY = containerRect.height / 2;
+    
+    const bubbles = skills.map((skill, index) => {
+      // Start bubbles in a loose cluster around the center
+      const angle = (index / skills.length) * Math.PI * 2;
+      const radius = 80 + Math.random() * 40;
       
-      const container = containerRef.current;
-      const containerRect = container.getBoundingClientRect();
-      
-      const bubbles = skills.map((skill, index) => ({
+      return {
         ...skill,
         id: `skill-${index}`,
-        x: Math.random() * (containerRect.width - 120) + 60,
-        y: Math.random() * (containerRect.height - 120) + 60,
+        x: centerX + Math.cos(angle) * radius,
+        y: centerY + Math.sin(angle) * radius,
+        vx: 0,
+        vy: 0,
         isDragging: false,
-        size: Math.max(60, skill.level * 0.8),
+        size: Math.max(50, Math.min(100, skill.level * 0.9)),
         color: categoryColors[skill.category as keyof typeof categoryColors],
-      }));
-      
-      setSkillBubbles(bubbles);
-    };
+      };
+    });
+    
+    setSkillBubbles(bubbles);
+  }, []);
 
+  const applyPhysics = useCallback(() => {
+    if (!containerRef.current) return;
+    
+    const container = containerRef.current;
+    const containerRect = container.getBoundingClientRect();
+    
+    setSkillBubbles(prev => {
+      const updated = prev.map(bubble => {
+        if (bubble.isDragging) return bubble;
+
+        let newVx = bubble.vx;
+        let newVy = bubble.vy;
+        let newX = bubble.x;
+        let newY = bubble.y;
+
+        // Apply gravity towards center
+        const centerX = containerRect.width / 2;
+        const centerY = containerRect.height / 2;
+        const dx = centerX - bubble.x;
+        const dy = centerY - bubble.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance > 0) {
+          const gravity = 0.2;
+          newVx += (dx / distance) * gravity;
+          newVy += (dy / distance) * gravity;
+        }
+
+        // Bubble collision and attraction
+        prev.forEach(other => {
+          if (other.id === bubble.id || other.isDragging) return;
+          
+          const odx = other.x - bubble.x;
+          const ody = other.y - bubble.y;
+          const odist = Math.sqrt(odx * odx + ody * ody);
+          const minDist = (bubble.size + other.size) / 2 + 5;
+          
+          if (odist < minDist && odist > 0) {
+            // Repulsion when too close
+            const repulsion = 0.5;
+            newVx -= (odx / odist) * repulsion;
+            newVy -= (ody / odist) * repulsion;
+          } else if (odist < minDist + 30 && odist > 0) {
+            // Attraction when nearby
+            const attraction = 0.1;
+            newVx += (odx / odist) * attraction;
+            newVy += (ody / odist) * attraction;
+          }
+        });
+
+        // Apply friction
+        newVx *= 0.95;
+        newVy *= 0.95;
+
+        // Update position
+        newX += newVx;
+        newY += newVy;
+
+        // Boundary collision
+        const radius = bubble.size / 2;
+        if (newX - radius < 0) {
+          newX = radius;
+          newVx = Math.abs(newVx) * 0.8;
+        }
+        if (newX + radius > containerRect.width) {
+          newX = containerRect.width - radius;
+          newVx = -Math.abs(newVx) * 0.8;
+        }
+        if (newY - radius < 0) {
+          newY = radius;
+          newVy = Math.abs(newVy) * 0.8;
+        }
+        if (newY + radius > containerRect.height) {
+          newY = containerRect.height - radius;
+          newVy = -Math.abs(newVy) * 0.8;
+        }
+
+        return {
+          ...bubble,
+          x: newX,
+          y: newY,
+          vx: newVx,
+          vy: newVy,
+        };
+      });
+
+      return updated;
+    });
+  }, []);
+
+  useEffect(() => {
     initializeBubbles();
     
     const handleResize = () => {
@@ -75,7 +177,22 @@ export const InteractiveSkills = () => {
     
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [initializeBubbles]);
+
+  useEffect(() => {
+    const animate = () => {
+      applyPhysics();
+      animationRef.current = requestAnimationFrame(animate);
+    };
+    
+    animationRef.current = requestAnimationFrame(animate);
+    
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [applyPhysics]);
 
   const handleMouseDown = (e: React.MouseEvent, bubbleId: string) => {
     e.preventDefault();
@@ -93,7 +210,7 @@ export const InteractiveSkills = () => {
 
     setSkillBubbles(prev => 
       prev.map(b => 
-        b.id === bubbleId ? { ...b, isDragging: true } : b
+        b.id === bubbleId ? { ...b, isDragging: true, vx: 0, vy: 0 } : b
       )
     );
   };
@@ -138,12 +255,12 @@ export const InteractiveSkills = () => {
       </div>
       
       <div className="mb-4 text-sm text-muted-foreground">
-        Drag the skill bubbles around! Bubble size represents proficiency level.
+        Drag the skill bubbles around! They'll stick together with gravity. Bubble fill represents proficiency level.
       </div>
 
       <div
         ref={containerRef}
-        className="relative w-full h-96 bg-gradient-to-br from-purple-900/5 to-cyan-900/5 rounded-xl overflow-hidden select-none"
+        className="relative w-full h-96 bg-gradient-to-br from-purple-900/5 to-cyan-900/5 rounded-xl overflow-hidden select-none border border-purple-200/20"
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
@@ -163,12 +280,29 @@ export const InteractiveSkills = () => {
             onMouseDown={(e) => handleMouseDown(e, bubble.id)}
           >
             <div
-              className={`w-full h-full rounded-full bg-gradient-to-br ${bubble.color} opacity-80 hover:opacity-100 transition-opacity duration-200 flex items-center justify-center text-white font-semibold text-xs text-center p-2 shadow-lg`}
+              className={`relative w-full h-full rounded-full bg-gradient-to-br ${bubble.color} hover:opacity-100 transition-opacity duration-200 flex items-center justify-center text-white font-semibold text-xs text-center p-2 shadow-lg border-2 border-white/20`}
+              style={{
+                background: `conic-gradient(from 0deg, hsl(var(--primary)) 0%, hsl(var(--primary)) ${bubble.level}%, rgba(255,255,255,0.2) ${bubble.level}%, rgba(255,255,255,0.2) 100%), linear-gradient(135deg, var(--tw-gradient-stops))`,
+              }}
             >
-              <div>
-                <div className="text-xs font-bold">{bubble.name}</div>
-                <div className="text-xs opacity-90">{bubble.level}%</div>
+              <div className="relative z-10">
+                <div className="text-xs font-bold drop-shadow-sm">{bubble.name}</div>
+                <div className="text-xs opacity-90 drop-shadow-sm">{bubble.level}%</div>
               </div>
+              
+              {/* Progress fill overlay */}
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{
+                  background: `conic-gradient(
+                    from -90deg,
+                    rgba(255,255,255,0.3) 0%,
+                    rgba(255,255,255,0.3) ${bubble.level}%,
+                    transparent ${bubble.level}%,
+                    transparent 100%
+                  )`,
+                }}
+              />
             </div>
           </div>
         ))}
