@@ -1,7 +1,7 @@
+
 import { useState } from "react";
 import { Mail, Download, Send, Linkedin, Github } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
 
 export const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -16,27 +16,25 @@ export const ContactSection = () => {
     setIsSubmitting(true);
 
     try {
-      // Call the edge function to send email and store message
-      const { data, error } = await supabase.functions.invoke(
-        "send-contact-email",
-        {
-          body: {
-            name: formData.name,
-            email: formData.email,
-            message: formData.message,
-          },
-        }
-      );
+      const formDataToSend = new FormData();
+      formDataToSend.append("access_key", "ebb154f1-e8cd-4388-b9c5-fe4a80311468");
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("message", formData.message);
+      formDataToSend.append("subject", `New Contact Form Message from ${formData.name}`);
 
-      if (error) {
-        console.error("Error sending message:", error);
-        toast.error("Failed to send message. Please try again.");
-      } else {
-        console.log("Message sent successfully:", data);
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formDataToSend,
+      });
+
+      if (response.ok) {
         toast.success(
           "Message sent successfully! Krishna will get back to you soon."
         );
         setFormData({ name: "", email: "", message: "" });
+      } else {
+        throw new Error("Failed to send message");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -48,7 +46,6 @@ export const ContactSection = () => {
 
   const handleDownloadResume = () => {
     // In a real implementation, this would download the actual resume file
-
     toast.info("Resume download will be available soon!");
   };
 
@@ -87,6 +84,7 @@ export const ContactSection = () => {
                 <input
                   type="text"
                   id="name"
+                  name="name"
                   value={formData.name}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
@@ -108,6 +106,7 @@ export const ContactSection = () => {
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
@@ -128,6 +127,7 @@ export const ContactSection = () => {
                 </label>
                 <textarea
                   id="message"
+                  name="message"
                   rows={6}
                   value={formData.message}
                   onChange={(e) =>
@@ -172,7 +172,7 @@ export const ContactSection = () => {
                 <Download className="w-4 h-4" />
                 <span className="gradient-text font-semibold">
                   <a
-                    href="/public/RS-Krishna-resume.pdf"
+                    href="/RS-Krishna-resume.pdf"
                     download="RS-Krishna-Resume.pdf"
                   >
                     Download Resume
@@ -186,7 +186,9 @@ export const ContactSection = () => {
               <h3 className="text-2xl font-bold mb-6">Connect With Me</h3>
               <div className="space-y-4">
                 <a
-                  href="#"
+                  href="https://www.linkedin.com/in/rs-krishna-0711a924a/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center space-x-4 p-4 glass rounded-lg hover:scale-105 transition-all duration-300 cursor-hover group"
                 >
                   <div className="p-3 glass rounded-full bg-blue-500/10">
@@ -194,12 +196,7 @@ export const ContactSection = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold group-hover:gradient-text transition-all duration-300">
-                      <a
-                        href="https://www.linkedin.com/in/rs-krishna-0711a924a/"
-                        target="_blank"
-                      >
-                        LinkedIn
-                      </a>
+                      LinkedIn
                     </h4>
                     <p className="text-sm text-muted-foreground">
                       Connect professionally
@@ -208,7 +205,9 @@ export const ContactSection = () => {
                 </a>
 
                 <a
-                  href="#"
+                  href="https://github.com/KRI5HNA-04"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center space-x-4 p-4 glass rounded-lg hover:scale-105 transition-all duration-300 cursor-hover group"
                 >
                   <div className="p-3 glass rounded-full bg-purple-500/10">
@@ -216,9 +215,7 @@ export const ContactSection = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold group-hover:gradient-text transition-all duration-300">
-                      <a href="https://github.com/KRI5HNA-04" target="_blank">
-                        GitHub
-                      </a>
+                      GitHub
                     </h4>
                     <p className="text-sm text-muted-foreground">
                       Check out my code
