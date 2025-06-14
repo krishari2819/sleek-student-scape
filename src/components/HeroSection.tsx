@@ -1,5 +1,7 @@
 
+
 import { ChevronDown } from "lucide-react";
+import { SplineScene } from "./SplineScene";
 
 export const HeroSection = () => {
   const scrollToAbout = () => {
@@ -8,17 +10,15 @@ export const HeroSection = () => {
 
   return (
     <section id="home" className="min-h-screen relative overflow-hidden">
-      {/* Temporarily disabled Spline 3D Background due to 403 error */}
-      {/* 
+      {/* Spline 3D Background */}
       <div className="absolute inset-0 z-0">
         <SplineScene 
-          scene="https://prod.spline.design/56d2fdf2-ab0f-457c-98c3-34048c92f7d1/scene.splinecode"
+          scene="https://prod.spline.design/K8B69mD4voEALzuq/scene.splinecode"
           className="w-full h-full opacity-30"
           onLoad={() => console.log('Spline scene loaded successfully')}
           onError={(error) => console.error('Spline scene failed to load:', error)}
         />
       </div>
-      */}
 
       {/* Background gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-purple-900/40 via-blue-900/40 to-cyan-900/40 z-1" />
@@ -110,3 +110,4 @@ export const HeroSection = () => {
     </section>
   );
 };
+
