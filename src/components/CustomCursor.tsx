@@ -67,7 +67,9 @@ export const CustomCursor = () => {
       {/* Main cursor circle (follows with delay) */}
       <div
         ref={followerRef}
-        className={`cursor-follower ${cursorVariant === 'hover' ? 'hover' : ''}`}
+        className={`cursor-follower transition-all duration-300 ease-out ${
+          cursorVariant === 'hover' ? 'scale-150' : 'scale-100'
+        }`}
         style={{
           position: 'fixed',
           width: '20px',
@@ -77,7 +79,6 @@ export const CustomCursor = () => {
           pointerEvents: 'none',
           zIndex: 9999,
           backdropFilter: 'blur(4px)',
-          transition: 'transform 0.1s ease-out',
         }}
       />
       {/* Small dot (follows mouse directly) */}
