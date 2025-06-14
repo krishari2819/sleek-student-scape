@@ -2,11 +2,11 @@ import {
   GraduationCap,
   Trophy,
   Briefcase,
-  Code2,
   MapPin,
   Calendar,
   Star,
 } from "lucide-react";
+import { InteractiveSkills } from "./InteractiveSkills";
 
 const skills = [
   { name: "JavaScript", level: 90, category: "Frontend" },
@@ -160,47 +160,8 @@ export const AboutSection = () => {
             </div>
           </div>
 
-          {/* Skills Section */}
-          <div className="glass p-8 rounded-2xl hover:scale-105 transition-all duration-300 cursor-hover">
-            <div className="flex items-center mb-8">
-              <div className="p-3 glass rounded-full mr-4 bg-blue-500/10">
-                <Code2 className="w-6 h-6 text-blue-500" />
-              </div>
-              <h3 className="text-2xl font-bold">Technical Skills</h3>
-            </div>
-
-            <div className="space-y-8">
-              {skillCategories.map((category) => (
-                <div key={category} className="space-y-4">
-                  <h4 className="text-lg font-semibold text-muted-foreground">
-                    {category}
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {skills
-                      .filter((skill) => skill.category === category)
-                      .map((skill, index) => (
-                        <div key={index} className="space-y-2">
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm font-medium">
-                              {skill.name}
-                            </span>
-                            <span className="text-xs text-muted-foreground">
-                              {skill.level}%
-                            </span>
-                          </div>
-                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div
-                              className="bg-gradient-to-r from-purple-500 to-cyan-500 h-2 rounded-full transition-all duration-1000 ease-out"
-                              style={{ width: `${skill.level}%` }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* Interactive Skills Section */}
+          <InteractiveSkills />
 
           {/* Experience */}
           <div className="glass p-8 rounded-2xl transition-transform hover:scale-[1.02] duration-300 cursor-hover">
