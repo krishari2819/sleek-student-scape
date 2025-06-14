@@ -1,5 +1,4 @@
 import { ChevronDown } from "lucide-react";
-import { SplineScene } from "./SplineScene";
 
 export const HeroSection = () => {
   const scrollToAbout = () => {
@@ -8,11 +7,11 @@ export const HeroSection = () => {
 
   return (
     <section id="home" className="min-h-screen relative overflow-hidden">
-      {/* Background gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/40 via-blue-900/40 to-cyan-900/40 z-1" />
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-cyan-900/20" />
 
       {/* Floating elements */}
-      <div className="absolute inset-0 z-2">
+      <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-32 h-32 bg-purple-500/10 rounded-full blur-xl animate-float" />
         <div
           className="absolute top-40 right-32 w-24 h-24 bg-cyan-500/10 rounded-full blur-xl animate-float"
@@ -21,16 +20,6 @@ export const HeroSection = () => {
         <div
           className="absolute bottom-32 left-32 w-40 h-40 bg-blue-500/10 rounded-full blur-xl animate-float"
           style={{ animationDelay: "4s" }}
-        />
-      </div>
-
-      {/* Spline 3D Background - Above background but below content */}
-      <div className="absolute inset-0 z-5">
-        <SplineScene 
-          scene="https://prod.spline.design/K8B69mD4voEALzuq/scene.splinecode"
-          className="w-full h-full opacity-30"
-          onLoad={() => console.log('Spline scene loaded successfully')}
-          onError={(error) => console.error('Spline scene failed to load:', error)}
         />
       </div>
 
