@@ -45,10 +45,10 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error('Failed to store message');
     }
 
-    // Send email notification to Krishna
+    // Send email notification to your verified email address
     const emailResponse = await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
-      to: ["krishna61223@gmail.com"],
+      to: ["king181219@gmail.com"], // Changed to your verified email
       subject: `New Contact Form Message from ${name}`,
       html: `
         <h2>New Contact Form Submission</h2>
