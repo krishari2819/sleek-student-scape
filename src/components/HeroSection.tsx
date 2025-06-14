@@ -29,13 +29,11 @@ export const HeroSection = () => {
           <div className="mb-8 flex justify-center">
             <div className="relative">
               <div className="w-48 h-48 glass rounded-full flex items-center justify-center border-4 border-purple-500/30 animate-pulse-soft">
-                <div className="w-40 h-40 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-4xl font-bold">
-                  <img
-                    src="/public/selfie.jpg"
-                    alt=""
-                    className="w-full h-full object-cover rounded-full shadow-lg animate-fade-in"
-                  />
-                </div>
+                <img
+                  src="/selfie.jpg"
+                  alt="RS Krishna"
+                  className="w-40 h-40 object-cover rounded-full shadow-lg animate-fade-in"
+                />
               </div>
               <div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-cyan-400 to-purple-500 rounded-full blur-md opacity-50 animate-pulse" />
             </div>
