@@ -1,4 +1,6 @@
+
 import { ChevronDown } from "lucide-react";
+import { SplineScene } from "./SplineScene";
 
 export const HeroSection = () => {
   const scrollToAbout = () => {
@@ -7,8 +9,16 @@ export const HeroSection = () => {
 
   return (
     <section id="home" className="min-h-screen relative overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-cyan-900/20" />
+      {/* Spline 3D Background - Replace with your Spline scene URL */}
+      <SplineScene 
+        scene="https://prod.spline.design/YOUR_SCENE_ID/scene.splinecode"
+        className="spline-hero opacity-30"
+        onLoad={() => console.log('Spline scene loaded')}
+        onError={(error) => console.error('Spline scene error:', error)}
+      />
+
+      {/* Background gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/40 via-blue-900/40 to-cyan-900/40" />
 
       {/* Floating elements */}
       <div className="absolute inset-0">
