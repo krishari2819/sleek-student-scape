@@ -11,10 +11,10 @@ export const HeroSection = () => {
   return (
     <section id="home" className="min-h-screen relative overflow-hidden">
       {/* Spline 3D Background */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 pointer-events-none">
         <SplineScene 
           scene="https://prod.spline.design/K8B69mD4voEALzuq/scene.splinecode"
-          className="w-full h-full opacity-30"
+          className="w-full h-full opacity-30 pointer-events-none"
           onLoad={() => console.log('Spline scene loaded successfully')}
           onError={(error) => console.error('Spline scene failed to load:', error)}
         />
