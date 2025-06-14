@@ -89,11 +89,22 @@
 @layer base {
   * {
     @apply border-border;
+    cursor: none !important;
   }
 
   body {
     @apply bg-background text-foreground;
-    cursor: none;
+    cursor: none !important;
+  }
+
+  /* Ensure all interactive elements have no cursor */
+  a, button, input, select, textarea, [role="button"], .cursor-hover {
+    cursor: none !important;
+  }
+  
+  /* Hide the default cursor completely */
+  html {
+    cursor: none !important;
   }
 }
 
@@ -129,4 +140,19 @@ html {
 
 .gradient-bg {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Line clamp utilities */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
