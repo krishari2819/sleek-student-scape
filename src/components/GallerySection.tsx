@@ -2,7 +2,14 @@
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ExternalLink, Github, Trophy, Code, Users, Calendar } from 'lucide-react';
+import { ExternalLink, Github, Trophy, Code, Users, Calendar, ArrowLeft, ArrowRight } from 'lucide-react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const galleryItems = [
   {
@@ -148,94 +155,103 @@ export const GallerySection = () => {
           </div>
         </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredItems.map((item) => (
-            <Card
-              key={item.id}
-              className="cursor-hover group overflow-hidden border-0 shadow-lg glass hover:shadow-2xl transition-all duration-500"
-              onMouseEnter={() => setHoveredItem(item.id)}
-              onMouseLeave={() => setHoveredItem(null)}
-            >
-              <div className="relative overflow-hidden">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute top-4 left-4 flex items-center space-x-2">
-                  <Badge className="bg-primary/90 text-primary-foreground backdrop-blur-sm">
-                    <div className="flex items-center space-x-1">
-                      {getTypeIcon(item.type)}
-                      <span className="capitalize">{item.type}</span>
+        {/* Carousel Gallery */}
+        <div className="relative py-10 px-4">
+          {filteredItems.length > 0 ? (
+            <Carousel className="w-full max-w-5xl mx-auto">
+              <CarouselContent>
+                {filteredItems.map((item) => (
+                  <CarouselItem key={item.id}>
+                    <div className="p-1">
+                      <Card
+                        className="cursor-hover group overflow-hidden border-0 shadow-lg glass hover:shadow-2xl transition-all duration-500"
+                        onMouseEnter={() => setHoveredItem(item.id)}
+                        onMouseLeave={() => setHoveredItem(null)}
+                      >
+                        <div className="relative overflow-hidden">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="w-full h-72 md:h-96 object-cover transition-transform duration-500 group-hover:scale-110"
+                          />
+                          <div className="absolute top-4 left-4 flex items-center space-x-2">
+                            <Badge className="bg-primary/90 text-primary-foreground backdrop-blur-sm">
+                              <div className="flex items-center space-x-1">
+                                {getTypeIcon(item.type)}
+                                <span className="capitalize">{item.type}</span>
+                              </div>
+                            </Badge>
+                            {item.award && (
+                              <Badge className="bg-yellow-500/90 text-white backdrop-blur-sm">
+                                <Trophy className="w-3 h-3 mr-1" />
+                                {item.award}
+                              </Badge>
+                            )}
+                          </div>
+                          <div className="absolute top-4 right-4">
+                            <Badge variant="outline" className="bg-background/80 backdrop-blur-sm">
+                              <Calendar className="w-3 h-3 mr-1" />
+                              {item.date}
+                            </Badge>
+                          </div>
+                          
+                          {/* Overlay with links */}
+                          <div className={`absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center space-x-4 transition-opacity duration-300 ${
+                            hoveredItem === item.id ? 'opacity-100' : 'opacity-0'
+                          }`}>
+                            {item.links?.github && (
+                              <a
+                                href={item.links.github}
+                                className="cursor-hover p-3 bg-white/20 rounded-full hover:bg-white/30 transition-colors"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <Github className="w-5 h-5 text-white" />
+                              </a>
+                            )}
+                            {item.links?.live && (
+                              <a
+                                href={item.links.live}
+                                className="cursor-hover p-3 bg-white/20 rounded-full hover:bg-white/30 transition-colors"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <ExternalLink className="w-5 h-5 text-white" />
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                        
+                        <CardContent className="p-6">
+                          <div className="flex items-center justify-between mb-3">
+                            <h3 className="text-2xl font-bold line-clamp-1">{item.title}</h3>
+                          </div>
+                          <p className="text-sm text-primary/80 font-medium mb-3">{item.category}</p>
+                          <p className="text-muted-foreground mb-4">{item.description}</p>
+                          
+                          <div className="flex flex-wrap gap-2">
+                            {item.tags.map((tag) => (
+                              <Badge key={tag} variant="secondary" className="text-xs">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
                     </div>
-                  </Badge>
-                  {item.award && (
-                    <Badge className="bg-yellow-500/90 text-white backdrop-blur-sm">
-                      <Trophy className="w-3 h-3 mr-1" />
-                      {item.award}
-                    </Badge>
-                  )}
-                </div>
-                <div className="absolute top-4 right-4">
-                  <Badge variant="outline" className="bg-background/80 backdrop-blur-sm">
-                    <Calendar className="w-3 h-3 mr-1" />
-                    {item.date}
-                  </Badge>
-                </div>
-                
-                {/* Overlay with links */}
-                <div className={`absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center space-x-4 transition-opacity duration-300 ${
-                  hoveredItem === item.id ? 'opacity-100' : 'opacity-0'
-                }`}>
-                  {item.links?.github && (
-                    <a
-                      href={item.links.github}
-                      className="cursor-hover p-3 bg-white/20 rounded-full hover:bg-white/30 transition-colors"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Github className="w-5 h-5 text-white" />
-                    </a>
-                  )}
-                  {item.links?.live && (
-                    <a
-                      href={item.links.live}
-                      className="cursor-hover p-3 bg-white/20 rounded-full hover:bg-white/30 transition-colors"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <ExternalLink className="w-5 h-5 text-white" />
-                    </a>
-                  )}
-                </div>
-              </div>
-              
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-xl font-bold line-clamp-1">{item.title}</h3>
-                </div>
-                <p className="text-sm text-primary/80 font-medium mb-3">{item.category}</p>
-                <p className="text-muted-foreground mb-4 line-clamp-3">{item.description}</p>
-                
-                <div className="flex flex-wrap gap-2">
-                  {item.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="text-xs">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="cursor-hover left-0 sm:-left-12 bg-background/70 hover:bg-background glass border-0" />
+              <CarouselNext className="cursor-hover right-0 sm:-right-12 bg-background/70 hover:bg-background glass border-0" />
+            </Carousel>
+          ) : (
+            <div className="text-center py-16">
+              <Code className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <p className="text-xl text-muted-foreground">No projects found for this filter.</p>
+            </div>
+          )}
         </div>
-
-        {filteredItems.length === 0 && (
-          <div className="text-center py-16">
-            <Code className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-            <p className="text-xl text-muted-foreground">No projects found for this filter.</p>
-          </div>
-        )}
       </div>
     </section>
   );

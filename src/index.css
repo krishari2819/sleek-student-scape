@@ -101,6 +101,11 @@
   a, button, input, select, textarea, [role="button"], .cursor-hover {
     cursor: none !important;
   }
+  
+  /* Hide the default cursor completely */
+  html {
+    cursor: none !important;
+  }
 }
 
 /* Glassmorphism */
