@@ -9,16 +9,6 @@ export const HeroSection = () => {
 
   return (
     <section id="home" className="min-h-screen relative overflow-hidden">
-      {/* Spline 3D Background */}
-      <div className="absolute inset-0 z-0">
-        <SplineScene 
-          scene="https://prod.spline.design/K8B69mD4voEALzuq/scene.splinecode"
-          className="w-full h-full opacity-30"
-          onLoad={() => console.log('Spline scene loaded successfully')}
-          onError={(error) => console.error('Spline scene failed to load:', error)}
-        />
-      </div>
-
       {/* Background gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-purple-900/40 via-blue-900/40 to-cyan-900/40 z-1" />
 
@@ -105,6 +95,16 @@ export const HeroSection = () => {
             <ChevronDown className="w-8 h-8 text-muted-foreground" />
           </button>
         </div>
+      </div>
+
+      {/* Spline 3D Background - Now at the very top for testing */}
+      <div className="absolute inset-0" style={{ zIndex: 9999 }}>
+        <SplineScene 
+          scene="https://prod.spline.design/K8B69mD4voEALzuq/scene.splinecode"
+          className="w-full h-full opacity-30"
+          onLoad={() => console.log('Spline scene loaded successfully')}
+          onError={(error) => console.error('Spline scene failed to load:', error)}
+        />
       </div>
     </section>
   );
